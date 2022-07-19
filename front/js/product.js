@@ -1,18 +1,53 @@
-console.log ('olp');
-
-// <img src="http://localhost:3000/images/kanap01.jpeg" alt="Photo d'un canapé bleu, deux places"> */
-
-
-<h1 id="Kanap Sinopé"></h1> // Nom du produit
-
-// 42
-<p>Prix : 1849 <span id="price"></span>€</p>
-
-//Dis enim malesuada risus sapien gravida nulla nisl arcu. 
-<p id="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+//récupérer l'id dans l'url
+let url = new URL(window.location.href);
+let productId = url.searchParams.get("id");
 
 
-/*<option value="blue">bleu</option>
-      <option value="white">blanc</option>
-      <option value="black">noir</option>
-      */
+
+//variable de l'id img
+const imgId = document.querySelector(".item__img");
+
+//variable de l'id title
+const titleId = document.querySelector("#title");
+
+//variable de l'id price
+const priceID = document.querySelector("#price");
+
+//variable de l'id description
+const descriptionId = document.querySelector("#description");
+
+//variable de l'id color
+const colorsId = document.querySelector("#colors");
+
+//variable de l'id quantity
+const quantityID = document.querySelector("#quantity");
+
+
+
+
+
+//Fonction qui permet d'envoyer une requête au navigateur pour récupérer l'api d'un produit
+
+fetch("http://localhost:3000/api/products/" + productId )
+.then((res) => {
+	if(res.ok) {
+		return res.json();
+	}
+})
+.then((product) => {
+	//on injecte les données dans le html
+      imgId.innerHTML = `<img scr="${product.imageUrl}" alt="${product.altTxt}"/>`
+      titleId.innerHTML = `${product.name}`
+      priceID.innerHTML = `${product.price}`
+      descriptionId.innerHTML = `${product.description}`
+      colorsId.innerHTML = `${product.name}`
+      console.log(product.name)
+})
+
+//message d'erreur si la requête ne répond pas
+.catch(function(err) {
+	console.log('Une erreur est survenue');
+	console.log(err);
+});
+
+
