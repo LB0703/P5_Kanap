@@ -12,16 +12,16 @@ fetch('http://localhost:3000/api/products')
 	let products = value;
  console.log(products);
  for (const product of products) {
-  console.log(product); //Afficher les produits
-  console.log(product.name); //Afficher le nom de chaque produit
-  console.log(product.colors[1]);//Afficher les couleurs de chaque produit
-  console.log(product["name"]);//Afficher le nom de chaque produit
-  console.log(product.description);//Afficher la description
+  //console.log(product); //Afficher les produits
+  //console.log(product.name); //Afficher le nom de chaque produit
+  //console.log(product.colors[1]);//Afficher les couleurs de chaque produit
+  //console.log(product["name"]);//Afficher le nom de chaque produit
+  //console.log(product.description);//Afficher la description
   console.log(product.imageUrl);
 
-document.getElementById("items").innerHTML += `<a href="./product.html?id=42${product._id}">
+document.getElementById("items").innerHTML += `<a href=./product.html?id=42"${product._id}">
  <article>
- <img scr="${product.imageUrl}" alt="${product.altTxt}"/>
+ <img scr="product.imageUrl"${product.imageUrl} alt=""${product.altTxt}/>
  <h3 class="productName">${product.name}</h3>
  <p class="productDescription">${product.description}</p>
 </article>
