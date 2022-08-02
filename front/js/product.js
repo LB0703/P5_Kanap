@@ -86,16 +86,14 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 				// Il est déjà dans le panier
 				value.quantity = parseInt(value.quantity) + parseInt(cartItem.quantity);
 			}
-		});
+			
 		
-			if(isProductAlreadyInCart == true) {
-			// Updating existing product quantity Mise à jour de la quantité de produit existante
-			cartItem.id++;
-			}
-			else {
-			// Pushing a new product in cart
+		});
+		if(isProductAlreadyInCart == false){
 			cart.push(cartItem);
-			}
+		}
+		
+			
 
 		// Storing those data in LocalStorage
 		localStorage.setItem("cart", JSON.stringify(cart));
