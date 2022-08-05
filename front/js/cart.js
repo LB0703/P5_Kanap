@@ -5,19 +5,25 @@ function getCart() {
   let cartLocalStorage = localStorage.getItem('cart');
 		if(cartLocalStorage !== null) {
 			return JSON.parse(cartLocalStorage);
-		}
+	}
 }
 ;
 
 // Getting the item that will contain the cart details
-const productsOfCart = document.getElementById("cart__items")
+const productsOfCart = document.getElementById("cart__items");
+  //!!!!declarer 2 variable globale quantite et globale price 
+  
+  let globalQuantity = document.getElementById("#totalQuantity");
+  let globatPrice = document.getElementById("#totalPrice");
 
 function createCartPage() {
-  //declarer 2 varible globale quantite et globale price ici
-cart = getCart();
-productsOfCart.innerHTML = "";
-console.log("blacla")
+     
+  
 
+
+
+  cart = getCart();
+  productsOfCart.innerHTML = "";
 
   // Browse the cart with a for of
   for (let product of cart){
@@ -72,7 +78,7 @@ console.log("blacla")
   
     // Creating the productColor element, adding the <p> and inserting text content, and setting the productDescription element as a child
     let productColor = document.createElement("p");
-    productColor.textContent = product.color;
+    productColor.textContent = `${colorOfProduct}`;
     productDescription.appendChild(productColor);
   
     // Creating the productPrice element, adding the <p> and inserting text content, and setting the productDescription element as a child
@@ -101,7 +107,7 @@ console.log("blacla")
     productQuantityInput.setAttribute("name", "itemQuantity");
     productQuantityInput.setAttribute("min", 1 );
     productQuantityInput.setAttribute("max", 100);
-    productQuantityInput.setAttribute("value", quantityOfProduct);
+    productQuantityInput.setAttribute("value", `${quantityOfProduct}`);
     productQuantityInput.classList.add("itemQuantity");
     productSettingsQuantity.appendChild(productQuantityInput);
   
@@ -116,8 +122,11 @@ console.log("blacla")
     deleteItem.textContent = "Supprimer";
     contentSettingsDelete.appendChild(deleteItem);
   
+    let cartPrice = document.createElement("div");
+    cartPrice.classList.add("cart__price");
+    productsOfCart.appendChild(cartPrice);
 
-
+  
     // Listening 'click' event on  button "supprimer"
   
       deleteItem.addEventListener('click', function(event) {
@@ -132,32 +141,50 @@ console.log("blacla")
         createCartPage();
       });
 
-    });
+
+//      productQuantityInput.addEventListener('click', function(event) {
+ //       event.preventDefault();
+        //let currentItem = event.target.closest("article").remove(); 
+//        let currentItemId = event.target.closest("article").dataset.id;
+//        let currentItemColor = event.target.closest("article").dataset.color;
+//        console.log(currentItemId, currentItemColor)
+
+ //       const newGlobalQuantity = false;
+ //       cart.forEach ((value, index) => { 
+ //       if(item.id == currentItemId && item.color == currentItemColor)
+//        newGlobalQuantity = true;
+ //       value.quantity = parseInt(value.quantity) + parseInt(cartItem.quantity)
+ //       });
+ //       if(newGlobalQuantity == false){
+ //         cart.push(productQuantityInput);
+//        }
+ //       localStorage.setItem("cart", JSON.stringify(newGlobalQuantity));
+ //       alert ("Votre article a été ajouté au panier");
+ //       createCartPage();
+ //     });
 
 
+
+
+
+
+  });
   }
 };
+
+
+
+
+
+
 createCartPage();
 
 
-
-
-
-
-
 // Retrieves the elements of the dom
-let totalView = document.querySelector(".cart__price p");
-let totalQuantityOfProduct = document.getElementById("totalQuantity");
-let totalPrice = document.getElementById("totalPrice");
+//let totalView = document.querySelector(".cart__price p");
+//let totalQuantityOfProduct = document.getElementById("totalQuantity");
+//let totalPrice = document.getElementById("totalPrice");
 
-
-function getNumberOfProducts () {
-
-  for( let product of cart) {
-    getNumberOfProducts += product.quantity;
-    return getNumberOfProducts
-  }
-}
 
 
 
