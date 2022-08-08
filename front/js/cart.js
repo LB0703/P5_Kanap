@@ -13,9 +13,10 @@ function getCart() {
 const productsOfCart = document.getElementById("cart__items");
   //!!!!declarer 2 variable globale quantite et globale price 
   
+  
   let globalQuantity = document.getElementById("#totalQuantity");
   let globatPrice = document.getElementById("#totalPrice");
-
+  
 function createCartPage() {
      
   
@@ -109,8 +110,10 @@ function createCartPage() {
     productQuantityInput.setAttribute("max", 100);
     productQuantityInput.setAttribute("value", `${quantityOfProduct}`);
     productQuantityInput.classList.add("itemQuantity");
+    
     productSettingsQuantity.appendChild(productQuantityInput);
   
+
     // Create div content settings delete
     let contentSettingsDelete = document.createElement("div");
     contentSettingsDelete.classList.add("cart__item__content__settings__delete");
@@ -139,31 +142,45 @@ function createCartPage() {
         localStorage.setItem("cart", JSON.stringify(newCart));
         alert ("Votre article a été supprimé du panier");
         createCartPage();
+     // });
+
+
+      globalQuantity.textContent = getGlobalQuantity();
+      globalQuantity = 0;
+      
+      let initialQuantity = Number(productQuantityInput.value);
+      productQuantityInput.addEventListener("change", () =>{
+        
+        quantityOfProduct = changedQuantity(product, Number(productQuantityInput.value));
+        globatPrice = changedTotalPrice(product,  (productQuantityInput.value));
+        initialQuantity = Number(productQuantityInput.value)
+        globalQuantity.textContent = getGlobalQuantity;
+
+        function getGlobalQuantity(product, quantity) {
+          let cart = getCart();
+          let globalQuantity = 0;
+          for(let product of cart) {
+            globalQuantity += product.quantity;
+          }
+          localStorage.setItem("cart", JSON.stringify(newCart));
+        alert ("Votre article a été ajouté au panier");
+        createCartPage();
+          return globalQuantity;
+        }
       });
+        //function globalQuantity() {
+     //globalQuantity = 0;
+      //for (let product of cart){
+      //  globalQuantity+= product.quantity
+      //}
+        
+        //}
+      
+        //createCartPage();
+})
+   
 
-
-//      productQuantityInput.addEventListener('click', function(event) {
- //       event.preventDefault();
-        //let currentItem = event.target.closest("article").remove(); 
-//        let currentItemId = event.target.closest("article").dataset.id;
-//        let currentItemColor = event.target.closest("article").dataset.color;
-//        console.log(currentItemId, currentItemColor)
-
- //       const newGlobalQuantity = false;
- //       cart.forEach ((value, index) => { 
- //       if(item.id == currentItemId && item.color == currentItemColor)
-//        newGlobalQuantity = true;
- //       value.quantity = parseInt(value.quantity) + parseInt(cartItem.quantity)
- //       });
- //       if(newGlobalQuantity == false){
- //         cart.push(productQuantityInput);
-//        }
- //       localStorage.setItem("cart", JSON.stringify(newGlobalQuantity));
- //       alert ("Votre article a été ajouté au panier");
- //       createCartPage();
- //     });
-
-
+ 
 
 
 
