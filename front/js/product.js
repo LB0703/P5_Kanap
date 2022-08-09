@@ -74,27 +74,14 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 		if(cartLocalStorage !== null) {
 			cart = JSON.parse(cartLocalStorage);
 		}
-
 		// Checking if product is already in the cart
-		
-
-		let isProductAlreadyInCart = false;
-		cart.forEach((value, index) => {
-			if(cartItem.id == value.id && cartItem.color == value.color) {
-				isProductAlreadyInCart = true;
-				console.log(index);
-				// Il est déjà dans le panier
-				value.quantity = parseInt(value.quantity) + parseInt(cartItem.quantity);
-			}
-			
-		
-		});
-		if(isProductAlreadyInCart == false){
+		const index = cart.findIndex(item => (cartItem.id === item.id && cartItem.color === item.color));
+		if(index === -1) {
 			cart.push(cartItem);
 		}
-		
-			
-
+		else {
+			cart[index].quantity = parseInt(cart[index].quantity) + parseInt(cartItem.quantity);
+		}
 		// Storing those data in LocalStorage
 		localStorage.setItem("cart", JSON.stringify(cart));
 		console.log(cart);
@@ -107,7 +94,6 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 .catch(function(err) {
 	console.log(err);
 });
-
 
 
 
