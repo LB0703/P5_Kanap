@@ -14,12 +14,12 @@ const productsOfCart = document.getElementById("cart__items");
   //!!!!declarer 2 variable globale quantite et globale price 
   
   
-  let globalQuantity = document.getElementById("#totalQuantity");
-  let globatPrice = document.getElementById("#totalPrice");
+  
   
 function createCartPage() {
      
-  
+ 
+  let globatPrice = document.getElementById("#totalPrice");
 
 
 
@@ -112,7 +112,7 @@ function createCartPage() {
     productQuantityInput.classList.add("itemQuantity");
     
     productSettingsQuantity.appendChild(productQuantityInput);
-  
+ 
 
     // Create div content settings delete
     let contentSettingsDelete = document.createElement("div");
@@ -142,49 +142,35 @@ function createCartPage() {
         localStorage.setItem("cart", JSON.stringify(newCart));
         alert ("Votre article a été supprimé du panier");
         createCartPage();
-     // });
 
 
-      globalQuantity.textContent = getGlobalQuantity();
-      globalQuantity = 0;
-      
+
+
+    // Listening 'change' event on  total quantity"
+
+      let itemQuantity = document.getElementsByClassName("itemQuantity");
+      console.log("bel")
       let initialQuantity = Number(productQuantityInput.value);
-      productQuantityInput.addEventListener("change", () =>{
-        
-        quantityOfProduct = changedQuantity(product, Number(productQuantityInput.value));
+        productQuantityInput.addEventListener("change", () =>{
+        productQuantityInput = changedQuantity(product, Number(productQuantityInput.value));
         globatPrice = changedTotalPrice(product,  (productQuantityInput.value));
         initialQuantity = Number(productQuantityInput.value)
         globalQuantity.textContent = getGlobalQuantity;
 
-        function getGlobalQuantity(product, quantity) {
+        function getGlobalQuantity(productQuantityInput, itemQuantity ) {
           let cart = getCart();
-          let globalQuantity = 0;
+          globalQuantity = 0;
           for(let product of cart) {
-            globalQuantity += product.quantity;
+            productQuantityInput.value += product.quantity;
           }
-          localStorage.setItem("cart", JSON.stringify(newCart));
-        alert ("Votre article a été ajouté au panier");
-        createCartPage();
+          localStorage.setItem("cart", JSON.stringify(getGlobalQuantity));
+          alert ("Votre article a été ajouté au panier");
+        
           return globalQuantity;
         }
+        createCartPage();
       });
-        //function globalQuantity() {
-     //globalQuantity = 0;
-      //for (let product of cart){
-      //  globalQuantity+= product.quantity
-      //}
-        
-        //}
-      
-        //createCartPage();
-})
-   
-
- 
-
-
-
-
+  })
   });
   }
 };
