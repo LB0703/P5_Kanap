@@ -21,7 +21,7 @@ for (let product of cart) {
 	let colorOfProduct = product.color;
 	let quantityOfProduct = product.quantity;
 	let nameOfProduct = product.name;
-  let productPrice = product.price;
+  	let productPrice = product.price;
 
 	// Sending an HTTP request to the API with fetch() to get product details
 	fetch(`http://localhost:3000/api/products/${productId}`)
@@ -114,7 +114,7 @@ for (let product of cart) {
 		let cartPrice = document.createElement("div");
 		cartPrice.classList.add("cart__price");
 		productArticle.appendChild(cartPrice);
-    productsPriceTotal += (Number(globatPrice) * Number(quantityOfProduct));
+    		productsPriceTotal += Number(product.price) * Number (quantityOfProduct);
 		document.getElementById('totalPrice').textContent = productsPriceTotal;
 
 
