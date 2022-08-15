@@ -109,7 +109,7 @@ for (let product of cart) {
 		deleteItem.classList.add("deleteItem")
 		deleteItem.textContent = "Supprimer";
 		contentSettingsDelete.appendChild(deleteItem);
-
+		
 		// Create the price element
 		let cartPrice = document.createElement("div");
 		cartPrice.classList.add("cart__price");
@@ -155,8 +155,127 @@ for (let product of cart) {
 
 
 
+// Form
 
 
+// Recover dom elements
+
+let firstName = document.getElementById("firstName");
+console.log(firstName)
+let lastName = document.getElementById("lastName");
+console.log(lastName)
+let address = document.getElementById("address");
+console.log(address)
+let city = document.getElementById("city");
+console.log(city)
+let email = document.getElementById("email");
+console.log(email)
+let orderBtn = document.getElementById("order");
+console.log(orderBtn)
+const orderForm = document.querySelector(".cart__order");
+console.log(orderForm)
+
+firstName.addEventListener("change", function (){
+	alert("Veuillez remplir le champ")
+})
+
+lastName.addEventListener("change", function (){
+	alert("Veuillez remplir le champ")
+})
+
+address.addEventListener("change", function (){
+	alert("Veuillez remplir le champ")
+})
+
+city.addEventListener("change", function (){
+	alert("Veuillez remplir le champ")
+})
+
+email.addEventListener("change", function (){
+	alert("Veuillez remplir le champ")
+})
+
+
+
+
+
+
+// Sending an HTTP request to the API with fetch() with method POST
+let products = [];
+
+for (let product of cart) {
+	products.push(product.id);
+}
+	// Listening 'change' event on button "Commander"
+	orderForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		if(cart.length === 0) {
+			alert("Veuillez choisir un produit")
+		}
+		else {
+			
+			localStorage.setItem("cart", JSON.stringify(cart));
+		}
+		alert("Votre commande est confirmée");
+		window.location.reload();
+	
+	
+	
+		// Creating the contact object
+		const contact = {
+			firstName: firstName.value,
+			lastName: lastName.value,
+			address: address.value,
+			city: city.value,
+			email: email.value
+			
+		}
+			console.log(contact);
+
+			localStorage.setItem("contact", JSON.stringify(contact));
+
+		const send = {
+			cart,
+			contact,
+		}
+			console.log(send)
+			
+	
+		const promise = fetch(`http://localhost:3000/api/products/order`, {  
+			
+			method: "POST",
+			body : JSON.stringify({send}),
+			Headers: {
+				"Content-Type": "application/json"
+			},
+		})
+		
+
+		.then ((response) => response.json()) //Returning the response in JSON format
+	
+		// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+		.then ((promise) => {
+			
+		let orderId = value.orderId
+		console.log("orderId")
+		console.log(orderId)
+		alert("Votre commande a été enregistrée");
+		})
+		console.log("promise")
+		console.log(promise)	
+	});
+
+	
+	
+	
+	
+
+//contact.firstName : string
+//contact.lastName : string
+//contact.address : string
+//contact.city : string
+//contact.email : string
+// products : ['415b7cacb65d43b2b5c1ff70f3393ad1', '415b7cacb65d43b2b5c1ff70f3393axxx', ...]
 
 
 
