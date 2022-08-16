@@ -21,7 +21,7 @@ for (let product of cart) {
 	let colorOfProduct = product.color;
 	let quantityOfProduct = product.quantity;
 	let nameOfProduct = product.name;
-  	let productPrice = product.price;
+	let productPrice = product.price;
 
 	// Sending an HTTP request to the API with fetch() to get product details
 	fetch(`http://localhost:3000/api/products/${productId}`)
@@ -155,25 +155,20 @@ for (let product of cart) {
 
 
 
-// Form
+///////////////////// Form
 
 
 // Recover dom elements
 
 let firstName = document.getElementById("firstName");
-console.log(firstName)
 let lastName = document.getElementById("lastName");
-console.log(lastName)
 let address = document.getElementById("address");
-console.log(address)
 let city = document.getElementById("city");
-console.log(city)
 let email = document.getElementById("email");
-console.log(email)
 let orderBtn = document.getElementById("order");
-console.log(orderBtn)
 const orderForm = document.querySelector(".cart__order");
-console.log(orderForm)
+
+
 
 firstName.addEventListener("change", function (){
 	alert("Veuillez remplir le champ")
@@ -200,82 +195,73 @@ email.addEventListener("change", function (){
 
 
 
-// Sending an HTTP request to the API with fetch() with method POST
+
 let products = [];
 
-for (let product of cart) {
-	products.push(product.id);
-}
+//for (let product of cart) {
+//	products.push(product.id);
+//}
 	// Listening 'change' event on button "Commander"
 	orderForm.addEventListener('submit', function(event) {
 		event.preventDefault();
-		if(cart.length === 0) {
-			alert("Veuillez choisir un produit")
-		}
-		else {
+		console.log("post stopper");
+
+		if(firstName && lastName && address && email){
+		console.log("c'est ok");
+		const orderFinal = JSON.parse(localStorage.getItem("cart"));
+		let OrderProductId = []
+		console.log(orderFinal);
+		console.log(OrderProductId);
+
+		orderFinal.forEach((product) => {
+			OrderProductId.push(product._id);
 			
-			localStorage.setItem("cart", JSON.stringify(cart));
-		}
-		alert("Votre commande est confirmée");
-		window.location.reload();
-	
-	
-	
-		// Creating the contact object
-		const contact = {
+		});
+		console.log("OrderProductId")
+		console.log(OrderProductId)
+			// Creating the contact object
+		const form = {
+			contact: {   
 			firstName: firstName.value,
 			lastName: lastName.value,
 			address: address.value,
 			city: city.value,
-			email: email.value
-			
-		}
-			console.log(contact);
-
-			localStorage.setItem("contact", JSON.stringify(contact));
-
-		const send = {
-			cart,
-			contact,
-		}
-			console.log(send)
-			
-	
-		const promise = fetch(`http://localhost:3000/api/products/order`, {  
-			
+			email: email.value,
+			},
+			products: cart,
+		};
+			console.log("form")
+			console.log(form)
+			//
+			// Sending an HTTP request to the API with fetch() with method POST
+		fetch(`http://localhost:3000/api/products/order`, {  
 			method: "POST",
-			body : JSON.stringify({send}),
+			body : JSON.stringify(form),
 			Headers: {
 				"Content-Type": "application/json"
 			},
 		})
-		
+			.then ((response) => response.json()) //Returning the response in JSON format
+			// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+			.then ((promise) => {
+				console.log(promise)
+				let responseServer = promise;
+				let orderId = promise.orderId;
+				console.log(responseServer)
+				console.log(orderId)
+			});
 
-		.then ((response) => response.json()) //Returning the response in JSON format
-	
-		// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
-		.then ((promise) => {
-			
-		let orderId = value.orderId
-		console.log("orderId")
-		console.log(orderId)
-		alert("Votre commande a été enregistrée");
-		})
-		console.log("promise")
-		console.log(promise)	
+		
+		}else{
+		alert("Veuillez remplir le formulaire correctement")
+		}
 	});
 
 	
 	
 	
-	
 
-//contact.firstName : string
-//contact.lastName : string
-//contact.address : string
-//contact.city : string
-//contact.email : string
-// products : ['415b7cacb65d43b2b5c1ff70f3393ad1', '415b7cacb65d43b2b5c1ff70f3393axxx', ...]
+
 
 
 
