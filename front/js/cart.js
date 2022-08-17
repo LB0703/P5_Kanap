@@ -157,6 +157,8 @@ for (let product of cart) {
 
 ///////////////////// Form
 
+//regex
+const regexName = /[a-zA-Z]+/g;
 
 // Recover dom elements
 
@@ -169,24 +171,36 @@ let orderBtn = document.getElementById("order");
 
 
 
+const validationFirstName = (firstName) => {
+	firstName.addEventListener("change", function(e) {
+		e.preventDefault();
+		if(regexName.test(firstName.value) == false) {
+			document.getElementById("firstNameErrorMsg").textContent = "Veuillez saisir un prénom valide.";
+			return false;
+		} else {
+			document.getElementById("firstNameErrorMsg").textContent = " ";
+			return true;
+		}	
+	});
+};
 
-firstName.addEventListener("change", function (){
+lastName.addEventListener("change", function() {
 	alert("Veuillez remplir le champ")
 })
 
-lastName.addEventListener("change", function (){
+address.addEventListener("change", function() {
 	alert("Veuillez remplir le champ")
 })
 
-address.addEventListener("change", function (){
+city.addEventListener("change", function () {
 	alert("Veuillez remplir le champ")
 })
 
-city.addEventListener("change", function (){
+email.addEventListener("change", function() {
 	alert("Veuillez remplir le champ")
 })
 
-email.addEventListener("change", function (){
+orderBtn.addEventListener("change", function() {
 	alert("Veuillez remplir le champ")
 })
 
@@ -196,8 +210,6 @@ email.addEventListener("change", function (){
 
 
 
-
-//let formOrder = JSON.parse(localStorage.getItem("cart"));
 let productsId = [];
 const orderForm = document.querySelector(".cart__order__form");
 for (let product of cart) {
@@ -207,7 +219,8 @@ for (let product of cart) {
 	orderForm.addEventListener("submit",(event) => {
 		event.preventDefault();
 		console.log("post stopper");
-				// Creating the contact object
+
+				// Creating the contact object + productsId
 		const form = {
 			contact : {   
 				firstName: firstName.value,
@@ -226,6 +239,7 @@ for (let product of cart) {
 			headers : {
 				"Accept": "application/json",
 				"Content-Type": "application/json"
+
 			},
 			body : JSON.stringify(form),
 		})
@@ -241,7 +255,6 @@ for (let product of cart) {
 			if(orderId){
 				document.location.href = `./confirmation.html?id=${orderId}`;
 				localStorage.clear()
-				//document.location.href = `confirmation.html?commande=${product.orderId}`;
 			}else{
 				alert("Veuillez remplir le formulaire correctement")
 			}
