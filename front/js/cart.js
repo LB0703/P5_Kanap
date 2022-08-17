@@ -166,7 +166,7 @@ let address = document.getElementById("address");
 let city = document.getElementById("city");
 let email = document.getElementById("email");
 let orderBtn = document.getElementById("order");
-const orderForm = document.querySelector(".cart__order");
+
 
 
 
@@ -196,68 +196,66 @@ email.addEventListener("change", function (){
 
 
 
-let products = [];
 
-//for (let product of cart) {
-//	products.push(product.id);
-//}
-	// Listening 'change' event on button "Commander"
-	orderForm.addEventListener('submit', function(event) {
+//let formOrder = JSON.parse(localStorage.getItem("cart"));
+let productsId = [];
+const orderForm = document.querySelector(".cart__order__form");
+for (let product of cart) {
+	productsId.push(product.id);
+}
+				// Listening 'change' event on button "Commander"
+	orderForm.addEventListener("submit",(event) => {
 		event.preventDefault();
 		console.log("post stopper");
-
-		if(firstName && lastName && address && email){
-		console.log("c'est ok");
-		const orderFinal = JSON.parse(localStorage.getItem("cart"));
-		let OrderProductId = []
-		console.log(orderFinal);
-		console.log(OrderProductId);
-
-		orderFinal.forEach((product) => {
-			OrderProductId.push(product._id);
-			
-		});
-		console.log("OrderProductId")
-		console.log(OrderProductId)
-			// Creating the contact object
+				// Creating the contact object
 		const form = {
-			contact: {   
-			firstName: firstName.value,
-			lastName: lastName.value,
-			address: address.value,
-			city: city.value,
-			email: email.value,
-			},
-			products: cart,
+			contact : {   
+				firstName: firstName.value,
+				lastName: lastName.value,
+				address: address.value,
+				city: city.value,
+				email: email.value,
+			},	
+			products: productsId,
 		};
-			console.log("form")
-			console.log(form)
-			//
-			// Sending an HTTP request to the API with fetch() with method POST
+		console.log("form")
+		console.log(form);
+				// Sending an HTTP request to the API with fetch() with method POST
 		fetch(`http://localhost:3000/api/products/order`, {  
-			method: "POST",
-			body : JSON.stringify(form),
-			Headers: {
+			method : "POST",
+			headers : {
+				"Accept": "application/json",
 				"Content-Type": "application/json"
 			},
+			body : JSON.stringify(form),
 		})
-			.then ((response) => response.json()) //Returning the response in JSON format
-			// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
-			.then ((promise) => {
-				console.log(promise)
-				let responseServer = promise;
-				let orderId = promise.orderId;
-				console.log(responseServer)
-				console.log(orderId)
-			});
-
-		
-		}else{
-		alert("Veuillez remplir le formulaire correctement")
-		}
+				//Returning the response in JSON format
+		.then ((response) => response.json()) 
+				// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+		.then ((product) => {
+			console.log("Votre formulaire à bien été envoyé");
+				// Getting the orderId from the API
+			
+			let orderId = product.orderId;
+			console.log(orderId);
+			if(orderId){
+				document.location.href = `./confirmation.html?id=${orderId}`;
+				localStorage.clear()
+				//document.location.href = `confirmation.html?commande=${product.orderId}`;
+			}else{
+				alert("Veuillez remplir le formulaire correctement")
+			}
+		})
+		.catch((error) => {
+		console.log("Veuillez réessayer une erreur est survenue")
+		});
 	});
 
-	
+
+
+
+
+
 	
 	
 
