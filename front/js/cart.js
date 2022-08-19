@@ -270,7 +270,7 @@ email.addEventListener("change", function() {
 			// Getting the orderId from the API
 			let orderId = value.orderId;
 			if(orderId){
-				document.location.href = `./confirmation.html?id=${value.orderId}`;
+				document.location.href = `./confirmation.html?orderId=${value.orderId}`;
 				console.log(orderId);
 			}else{
 				alert("Veuillez remplir le formulaire correctement");
