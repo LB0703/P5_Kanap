@@ -5,10 +5,18 @@ if(cartLocalStorage !== null) {
 	cart = JSON.parse(cartLocalStorage);
 }
 
+
+
+if(cart.length === 0) {
+	document.querySelector('.cart').textContent = "Aucun produit";
+	document.querySelector('.cart').style = "text-align:center";
+};
+
+
 // Getting the item that will contain the cart details
 let globatPrice = document.getElementById("#totalPrice");
 const productsOfCart = document.getElementById("cart__items");
-productsOfCart.innerHTML = "";
+productsOfCart.innerHTML = " ";
 
 let productsCount = 0;
 let productsPriceTotal = 0;
@@ -149,7 +157,8 @@ for (let product of cart) {
 			}
 			alert("Votre quantité a été modifiée");
 			window.location.reload();
-		});
+		})
+
 	});
 }
 
@@ -185,24 +194,22 @@ const validationFirstName = (firstName) => {
 };
 
 lastName.addEventListener("change", function() {
-	alert("Veuillez remplir le champ")
+	console.log("Veuillez remplir le champ")
 })
 
 address.addEventListener("change", function() {
-	alert("Veuillez remplir le champ")
+	console.log("Veuillez remplir le champ")
 })
 
 city.addEventListener("change", function () {
-	alert("Veuillez remplir le champ")
+	console.log("Veuillez remplir le champ")
 })
 
 email.addEventListener("change", function() {
-	alert("Veuillez remplir le champ")
+	console.log("Veuillez remplir le champ")
 })
 
-orderBtn.addEventListener("change", function() {
-	alert("Veuillez remplir le champ")
-})
+
 
 
 
@@ -211,11 +218,11 @@ orderBtn.addEventListener("change", function() {
 
 
 let productsId = [];
-const orderForm = document.querySelector(".cart__order__form");
 for (let product of cart) {
 	productsId.push(product.id);
 }
-				// Listening 'change' event on button "Commander"
+	// Listening 'change' event on button "Commander"
+	const orderForm = document.querySelector(".cart__order__form");			
 	orderForm.addEventListener("submit",(event) => {
 		event.preventDefault();
 		console.log("post stopper");
@@ -233,7 +240,10 @@ for (let product of cart) {
 		};
 		console.log("form")
 		console.log(form);
-				// Sending an HTTP request to the API with fetch() with method POST
+
+
+
+		// Sending an HTTP request to the API with fetch() with method POST
 		fetch(`http://localhost:3000/api/products/order`, {  
 			method : "POST",
 			headers : {
@@ -243,25 +253,27 @@ for (let product of cart) {
 			},
 			body : JSON.stringify(form),
 		})
-				//Returning the response in JSON format
-		.then ((response) => response.json()) 
-				// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
-		.then ((product) => {
-			console.log("Votre formulaire à bien été envoyé");
-				// Getting the orderId from the API
-			
-			let orderId = product.orderId;
-			console.log(orderId);
-			if(orderId){
-				document.location.href = `./confirmation.html?id=${orderId}`;
-				localStorage.clear()
-			}else{
-				alert("Veuillez remplir le formulaire correctement")
-			}
-		})
-		.catch((error) => {
-		console.log("Veuillez réessayer une erreur est survenue")
-		});
+	//Returning the response in JSON format
+	.then ((response) => response.json()) 
+	// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+.then ((value) => {
+console.log("Votre formulaire à bien été envoyé");
+	// Getting the orderId from the API
+
+let orderId = value.orderId;
+
+if(orderId){
+	document.location.href = `./confirmation.html?id=${value.orderId}`;
+	console.log(orderId);
+}else{
+	alert("Veuillez remplir le formulaire correctement")
+	
+}
+})
+.catch((err) => {
+console.log("Veuillez réessayer une erreur est survenue");
+
+})
 	});
 
 

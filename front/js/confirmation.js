@@ -1,5 +1,14 @@
-      // Order confirmation
+// Order confirmation
 
-      // Recover order id from document URL
-      let params = new URL (document.location).searchParams;
-      document.getElementById("orderId").textContent = params.get("id");
+
+// Getting orderId from URL
+let url = new URL(document.location);
+let orderId = url.searchParams.get("orderId");
+      if(orderId !== '' && orderId !== null && orderId !== undefined) {
+	      // Adding orderId to the page
+            document.getElementById("orderId").textContent = orderId;
+      }
+      else {
+	      // Adding error message
+            document.querySelector('.confirmation p').textContent = "Aucune commande correspondante";
+      };
