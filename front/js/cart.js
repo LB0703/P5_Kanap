@@ -1,9 +1,10 @@
 // Getting back the cart from localStorage
-let cart = [];
-let cartLocalStorage = localStorage.getItem('cart');
-if(cartLocalStorage !== null) {
-	cart = JSON.parse(cartLocalStorage);
-}
+let cart = getCart();
+//let cart = [];
+//let cartLocalStorage = localStorage.getItem('cart');
+//if(cartLocalStorage !== null) {
+//	cart = JSON.parse(cartLocalStorage);
+//}
 
 if(cart.length === 0) {
 	document.querySelector('.cart').textContent = "Aucun produit";
@@ -13,7 +14,7 @@ if(cart.length === 0) {
 // Getting the item that will contain the cart details
 let globatPrice = document.getElementById("#totalPrice");
 const productsOfCart = document.getElementById("cart__items");
-productsOfCart.innerHTML = " ";
+//productsOfCart.innerHTML = " ";
 
 let productsCount = 0;
 let productsPriceTotal = 0;
@@ -106,7 +107,7 @@ for (let product of cart) {
 			productQuantityInput.classList.add("itemQuantity");
 			productSettingsQuantity.appendChild(productQuantityInput);
 
-				// Add the products in total quantity
+				///////// Add the products in total quantity///////////
 				productsCount = Number(productsCount) + Number(quantityOfProduct);
 				document.getElementById('totalQuantity').textContent = productsCount;
 
@@ -126,7 +127,7 @@ for (let product of cart) {
 			cartPrice.classList.add("cart__price");
 			productArticle.appendChild(cartPrice);
 
-				// Add the prices in total price
+				/////////// Add the prices in total price////////////////
     				productsPriceTotal += Number(product.price) * Number (quantityOfProduct);
 				document.getElementById('totalPrice').textContent = productsPriceTotal;
 
@@ -136,13 +137,15 @@ for (let product of cart) {
 			deleteItem.addEventListener('click', function(event) {
 				event.preventDefault();
 				// Checking if product is already in the cart
+				//findProductFromCart(productId='', colorOfProduct='');
 				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
 				if(index === -1) {
 					// Nothing
 				}
 				else {
 					cart.splice(index, 1);
-					localStorage.setItem("cart", JSON.stringify(cart));
+					saveCart(cart);
+					//localStorage.setItem("cart", JSON.stringify(cart));
 				}
 				alert("Votre article a été supprimé du panier");
 				window.location.reload();
@@ -151,14 +154,17 @@ for (let product of cart) {
 			// Listening 'change' event on button "quantity"
 			productQuantityInput.addEventListener('change', function(event) {
 				event.preventDefault();
+				//findProductFromCart(productId='', colorOfProduct='')
 				// Checking if product is already in the cart
 				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
 				if(index === -1) {
 					// Nothing
 				}
+				
 				else {
 					cart[index].quantity = Number(productQuantityInput.value);
-					localStorage.setItem("cart", JSON.stringify(cart));
+					saveCart(cart);
+				//localStorage.setItem("cart", JSON.stringify(cart));
 				}
 				alert("Votre quantité a été modifiée");
 				window.location.reload();
@@ -258,27 +264,27 @@ email.addEventListener("change", function() {
 			body : JSON.stringify(form),
 		})
 			//Returning the response in JSON format
-		.then (function(res) {
-			if (res.ok){
-				return res.json()
-			} 
-		})	
-				// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
-		.then (function(value) {
-			console.log("Votre formulaire à bien été envoyé");
+			.then (function(res) {
+				if (res.ok){
+					return res.json()
+				} 
+			})	
+			// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+			.then (function(value) {
+				console.log("Votre formulaire à bien été envoyé");
 
-			// Getting the orderId from the API
-			let orderId = value.orderId;
-			if(orderId){
-				document.location.href = `./confirmation.html?orderId=${value.orderId}`;
-				console.log(orderId);
-			}else{
-				alert("Veuillez remplir le formulaire correctement");
-			}
-		})
-		.catch(function()  {
-		console.log("Veuillez réessayer une erreur est survenue");
-		});
+				// Getting the orderId from the API
+				let orderId = value.orderId;
+				if(orderId){
+					document.location.href = `./confirmation.html?orderId=${value.orderId}`;
+					console.log(orderId);
+				}else{
+					alert("Veuillez remplir le formulaire correctement");
+				}
+			})
+			.catch(function()  {
+				console.log("Veuillez réessayer une erreur est survenue");
+			});
 });
 
 

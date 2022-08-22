@@ -1,7 +1,9 @@
 // Getting productId from url
-let url = new URL(window.location.href);
-let productId = url.searchParams.get("id");
-//let productId = getUrlParam(paramName = 'id');
+//let url = new URL(window.location.href);
+//let productId = url.searchParams.get("id");
+getUrlParam(paramName = 'id');
+let productId = getUrlParam(paramName = 'id');
+console.log(productId);
 
 // Recover api elements
 const img = document.querySelector(".item__img");
@@ -27,10 +29,10 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 		title.textContent = product.name;
 
 		const price = document.getElementById("price");
-		price.textContent = product.price
+		price.textContent = product.price;
 	
 		const description = document.getElementById("description");
-		description.textContent = product.description
+		description.textContent = product.description;
 	
 		//create a loop for the choice of color
 		const colorSelect = document.getElementById("colors")
@@ -67,22 +69,26 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 			console.log(cartItem);
 
 			// Getting back the cart from localStorage
-			let cart = [];
-				let cartLocalStorage = localStorage.getItem('cart');
-				if(cartLocalStorage !== null) {
-					cart = JSON.parse(cartLocalStorage);
-				}
+			let cart = getCart();
+			//let cart = [];
+			//	let cartLocalStorage = localStorage.getItem('cart');
+			//	if(cartLocalStorage !== null) {
+			//		cart = JSON.parse(cartLocalStorage);
+			//	}
+
+
 				// Checking if product is already in the cart
 				const index = cart.findIndex(item => (cartItem.id === item.id && cartItem.color === item.color));
 				if(index === -1) {
 					cart.push(cartItem);
-				}
-				else {
-					cart[index].quantity = parseInt(cart[index].quantity) + parseInt(cartItem.quantity);
+			
+				}else{
+				cart[index].quantity = parseInt(cart[index].quantity) + parseInt(cartItem.quantity);
 				}
 			// Storing those data in LocalStorage
-			localStorage.setItem("cart", JSON.stringify(cart));
-			console.log(cart);
+			saveCart(cart);
+			//localStorage.setItem("cart", JSON.stringify(cart));
+			
 			//Confirming customer
 			alert("Produit(s) ajouté(s) au panier");
 			window.location.href = "cart.html"
