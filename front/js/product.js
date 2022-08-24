@@ -1,9 +1,7 @@
 // Getting productId from url
-//let url = new URL(window.location.href);
-//let productId = url.searchParams.get("id");
 getUrlParam(paramName = 'id');
 let productId = getUrlParam(paramName = 'id');
-console.log(productId);
+
 
 // Recover api elements
 const img = document.querySelector(".item__img");
@@ -70,24 +68,17 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 
 			// Getting back the cart from localStorage
 			let cart = getCart();
-			//let cart = [];
-			//	let cartLocalStorage = localStorage.getItem('cart');
-			//	if(cartLocalStorage !== null) {
-			//		cart = JSON.parse(cartLocalStorage);
-			//	}
-
-
+			
 				// Checking if product is already in the cart
 				const index = cart.findIndex(item => (cartItem.id === item.id && cartItem.color === item.color));
-				if(index === -1) {
-					cart.push(cartItem);
-			
-				}else{
-				cart[index].quantity = parseInt(cart[index].quantity) + parseInt(cartItem.quantity);
-				}
+					if(index === -1) {
+						cart.push(cartItem);
+					}else{
+						cart[index].quantity = parseInt(cart[index].quantity) + parseInt(cartItem.quantity);
+					}
+					
 			// Storing those data in LocalStorage
 			saveCart(cart);
-			//localStorage.setItem("cart", JSON.stringify(cart));
 			
 			//Confirming customer
 			alert("Produit(s) ajouté(s) au panier");
@@ -97,3 +88,4 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 	.catch(function() {
 		document.querySelector('.item').textContent = "Produit introuvable";
 	});
+	

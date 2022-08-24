@@ -1,5 +1,5 @@
 
-//
+// Recover dom elements
 const productList = document.querySelector("#items");
 
 // Getting products data from backend

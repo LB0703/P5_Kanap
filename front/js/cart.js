@@ -1,10 +1,5 @@
 // Getting back the cart from localStorage
 let cart = getCart();
-//let cart = [];
-//let cartLocalStorage = localStorage.getItem('cart');
-//if(cartLocalStorage !== null) {
-//	cart = JSON.parse(cartLocalStorage);
-//}
 
 if(cart.length === 0) {
 	document.querySelector('.cart').textContent = "Aucun produit";
@@ -137,7 +132,6 @@ for (let product of cart) {
 			deleteItem.addEventListener('click', function(event) {
 				event.preventDefault();
 				// Checking if product is already in the cart
-				//findProductFromCart(productId='', colorOfProduct='');
 				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
 				if(index === -1) {
 					// Nothing
@@ -145,7 +139,6 @@ for (let product of cart) {
 				else {
 					cart.splice(index, 1);
 					saveCart(cart);
-					//localStorage.setItem("cart", JSON.stringify(cart));
 				}
 				alert("Votre article a été supprimé du panier");
 				window.location.reload();
@@ -154,13 +147,12 @@ for (let product of cart) {
 			// Listening 'change' event on button "quantity"
 			productQuantityInput.addEventListener('change', function(event) {
 				event.preventDefault();
-				//findProductFromCart(productId='', colorOfProduct='')
 				// Checking if product is already in the cart
 				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
+				//findProductFromCart();
 				if(index === -1) {
 					// Nothing
 				}
-				
 				else {
 					cart[index].quantity = Number(productQuantityInput.value);
 					saveCart(cart);
@@ -169,6 +161,7 @@ for (let product of cart) {
 				alert("Votre quantité a été modifiée");
 				window.location.reload();
 			})
+			
 		});
 };
 

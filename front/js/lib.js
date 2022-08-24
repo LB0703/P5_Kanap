@@ -1,5 +1,3 @@
-
-
 // Function to getting productId from url
 function getUrlParam(paramName ='') {
 	let url = new URL(window.location.href);
@@ -25,13 +23,40 @@ function saveCart(cart = []) {
 
 
 // Function find product from cart
-//function findProductFromCart(productId='', colorOfProduct='') {
-	
-//	const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
-//	if(index === -1) {
-//		// Nothing
-//	}
-	
+function findProductFromCart() {
+	let cart = getCart();
+
+	for (let product of cart) {
+		let cartItem = {	
+			name: product.name,
+			id: productId,
+		color: colors.value,
+		quantity: quantity.value
+		};
+		const index = cartFindIndex
+		if(cart.findIndex (item => (cartItem.id === item.id && cartItem.color === item.color)));
+		console.log(index);
+	}
+}
+
 	
 
-//	}
+
+
+// Function delete product to cart
+//function deleteProductToCart(productId='', productColor=''){
+//	let cart = getCart();
+	
+	
+	//if(cart = cart.findIndex(item => (cartItem.id === item.id && cartItem.color === item.color)))
+				//saveCart();
+	//		};
+			
+
+
+
+
+
+// Function update product quantity from cart
+
+// Function add product to cart 
