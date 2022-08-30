@@ -1,12 +1,11 @@
-// Function to getting productId from url
+// Getting param url value
 function getUrlParam(paramName ='') {
 	let url = new URL(window.location.href);
 	let value = url.searchParams.get(paramName);
 	return value;
 }
 
-
-// Function to get cart
+// Getting cart from LocalStorage
 function getCart() {
 	let cart = [];
 	let cartLocalStorage = localStorage.getItem('cart');
@@ -16,47 +15,56 @@ function getCart() {
 	return cart;
 }
 
-// Function save cart
+// Saving cart to LocalStorage
 function saveCart(cart = []) {
-	localStorage.setItem("cart", JSON.stringify(cart));
+	localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-
-// Function find product from cart
-function findProductFromCart() {
+// Finding product from cart
+function findProductFromCart(productId = '', productColor = '') {
 	let cart = getCart();
+	const index = cart.findIndex(item => (productId === item.id && productColor === item.color));
+	return index;
+}
 
-	for (let product of cart) {
-		let cartItem = {	
-			name: product.name,
-			id: productId,
-		color: colors.value,
-		quantity: quantity.value
-		};
-		const index = cartFindIndex
-		if(cart.findIndex (item => (cartItem.id === item.id && cartItem.color === item.color)));
-		console.log(index);
+// Deleting product from cart
+function deleteProductToCart(productId = '', productColor = '') {
+	let cart = getCart();
+	// Checking if product is already in the cart
+	const index = findProductFromCart(productId, productColor);
+	if(index !== -1) {
+		cart.splice(index, 1);
+		saveCart(cart);
 	}
 }
 
-	
+// Updating product from cart
+function updateProductQuantityFromCart(productId = '', productColor = '', quantity = 0) {
+	let cart = getCart();
+	// Checking if product is already in the cart
+	const index = findProductFromCart(productId, productColor);
+	if(index !== -1) {
+		cart[index].quantity = Number(quantity);
+		saveCart(cart);
+	}
+}
 
-
-
-// Function delete product to cart
-//function deleteProductToCart(productId='', productColor=''){
-//	let cart = getCart();
-	
-	
-	//if(cart = cart.findIndex(item => (cartItem.id === item.id && cartItem.color === item.color)))
-				//saveCart();
-	//		};
-			
-
-
-
-
-
-// Function update product quantity from cart
-
-// Function add product to cart 
+// Adding product from cart
+function addProductToCart(productId = '', productColor = '', quantity = 0) {
+	// Getting cart from LocalStorage
+	let cart = getCart();
+	// Checking if product is already in the cart
+	const index = findProductFromCart(productId, productColor);
+	if(index === -1) {
+		let cartItem = {
+			id: productId,
+			color: productColor,
+			quantity: quantity
+		};
+		cart.push(cartItem);
+	}
+	else {
+		cart[index].quantity = parseInt(cart[index].quantity) + parseInt(quantity);
+	}
+	saveCart(cart);
+}

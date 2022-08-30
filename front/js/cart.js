@@ -4,41 +4,34 @@ let cart = getCart();
 if(cart.length === 0) {
 	document.querySelector('.cart').textContent = "Aucun produit";
 	document.querySelector('.cart').style = "text-align:center";
-};
+}
+else {
+	// Getting the item that will contain the cart details
+	let globatPrice = document.getElementById("#totalPrice");
+	const productsOfCart = document.getElementById("cart__items");
+	let productsCount = 0;
+	let productsPriceTotal = 0;
 
-// Getting the item that will contain the cart details
-let globatPrice = document.getElementById("#totalPrice");
-const productsOfCart = document.getElementById("cart__items");
-//productsOfCart.innerHTML = " ";
+	// Browse the cart with a for of
+	for(let cartItem of cart) {
 
-let productsCount = 0;
-let productsPriceTotal = 0;
-
-// Browse the cart with a for of
-for (let product of cart) {
-
-	// For each product, getting product ID + selected color + filled quantity
-	let productId = product.id;
-	let colorOfProduct = product.color;
-	let quantityOfProduct = product.quantity;
-	
-	// Sending an HTTP request to the API with fetch() to get product details
-	fetch(`http://localhost:3000/api/products/${productId}`)
-
-		//Returning the response in JSON format
+		// For each product, getting product ID + selected color + filled quantity
+		// Sending an HTTP request to the API with fetch() to get product details
+		fetch(`http://localhost:3000/api/products/${cartItem.id}`)
+		// Returning the response in JSON format
 		.then(function(res) {
 			if(res.ok) {
 				return res.json();
 			}
-		}) 
+		})
 		// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
 		.then(function(product) {
 
 			// Adding the different elements in the DOM
 			let productArticle = document.createElement ("article");
 			productArticle.classList.add("cart__item");
-			productArticle.setAttribute("data-id", productId);
-			productArticle.setAttribute("data-color", colorOfProduct)
+			productArticle.setAttribute("data-id", cartItem.id);
+			productArticle.setAttribute("data-color", cartItem.color)
 			productsOfCart.appendChild(productArticle)
 
 			// Creating the imgDiv element, adding the cart__item__img class, and setting the productArticle element as a child
@@ -69,7 +62,7 @@ for (let product of cart) {
 
 			// Creating the productColor element, adding the <p> and inserting text content, and setting the productDescription element as a child
 			let productColor = document.createElement("p");
-			productColor.textContent = `${colorOfProduct}`;
+			productColor.textContent = `${cartItem.color}`;
 			productDescription.appendChild(productColor);
 
 			// Creating the productPrice element, adding the <p> and inserting text content, and setting the productDescription element as a child
@@ -98,13 +91,13 @@ for (let product of cart) {
 			productQuantityInput.setAttribute("name", "itemQuantity");
 			productQuantityInput.setAttribute("min", 1 );
 			productQuantityInput.setAttribute("max", 100);
-			productQuantityInput.setAttribute("value", `${quantityOfProduct}`);
+			productQuantityInput.setAttribute("value", `${cartItem.quantity}`);
 			productQuantityInput.classList.add("itemQuantity");
 			productSettingsQuantity.appendChild(productQuantityInput);
 
-				///////// Add the products in total quantity///////////
-				productsCount = Number(productsCount) + Number(quantityOfProduct);
-				document.getElementById('totalQuantity').textContent = productsCount;
+			///////// Add the products in total quantity///////////
+			productsCount = Number(productsCount) + Number(cartItem.quantity);
+			document.getElementById('totalQuantity').textContent = productsCount;
 
 			// Create div content settings delete
 			let contentSettingsDelete = document.createElement("div");
@@ -116,30 +109,20 @@ for (let product of cart) {
 			deleteItem.classList.add("deleteItem")
 			deleteItem.textContent = "Supprimer";
 			contentSettingsDelete.appendChild(deleteItem);
-		
+
 			// Create the price element
 			let cartPrice = document.createElement("div");
 			cartPrice.classList.add("cart__price");
 			productArticle.appendChild(cartPrice);
 
-				/////////// Add the prices in total price////////////////
-    				productsPriceTotal += Number(product.price) * Number (quantityOfProduct);
-				document.getElementById('totalPrice').textContent = productsPriceTotal;
-
-
+			/////////// Add the prices in total price////////////////
+			productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+			document.getElementById('totalPrice').textContent = productsPriceTotal;
 
 			// Listening 'click' event on button "supprimer"
 			deleteItem.addEventListener('click', function(event) {
 				event.preventDefault();
-				// Checking if product is already in the cart
-				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
-				if(index === -1) {
-					// Nothing
-				}
-				else {
-					cart.splice(index, 1);
-					saveCart(cart);
-				}
+				deleteProductToCart(cartItem.id, cartItem.color);
 				alert("Votre article a été supprimé du panier");
 				window.location.reload();
 			});
@@ -147,140 +130,138 @@ for (let product of cart) {
 			// Listening 'change' event on button "quantity"
 			productQuantityInput.addEventListener('change', function(event) {
 				event.preventDefault();
-				// Checking if product is already in the cart
-				const index = cart.findIndex(item => (productId === item.id && colorOfProduct === item.color));
-				//findProductFromCart();
-				if(index === -1) {
-					// Nothing
-				}
-				else {
-					cart[index].quantity = Number(productQuantityInput.value);
-					saveCart(cart);
-				//localStorage.setItem("cart", JSON.stringify(cart));
-				}
+				updateProductQuantityFromCart(cartItem.id, cartItem.color, productQuantityInput.value);
 				alert("Votre quantité a été modifiée");
 				window.location.reload();
 			})
-			
 		});
-};
+	};
 
+	// #################################################################################################### Form
 
-
-///////////////////// Form
-
-//regex
-const regexName = /[a-zA-Z]+/g;
-
-// Recover dom elements
-
-let firstName = document.getElementById("firstName");
-let lastName = document.getElementById("lastName");
-let address = document.getElementById("address");
-let city = document.getElementById("city");
-let email = document.getElementById("email");
-let orderBtn = document.getElementById("order");
-
-
-
-const validationFirstName = (firstName) => {
-	firstName.addEventListener("change", function(e) {
-		e.preventDefault();
-		if(regexName.test(firstName.value) == false) {
-			document.getElementById("firstNameErrorMsg").textContent = "Veuillez saisir un prénom valide.";
-			return false;
-		} else {
-			document.getElementById("firstNameErrorMsg").textContent = " ";
+	// ################################################## Validating form field
+	function validateField(fieldId = '', regex) {
+		let field = document.getElementById(fieldId);
+		let match = regex.test(field.value);
+		if(field.value === '' || match === true) {
+			document.getElementById(`${fieldId}ErrorMsg`).textContent = "";
 			return true;
-		}	
+		}
+		else {
+			document.getElementById(`${fieldId}ErrorMsg`).textContent = "Votre saisie n'est pas valide";
+			return false;
+		}
+	}
+
+	// ################################################## Regex
+	
+	const nameRegex = new RegExp("^[a-zA-Z ,.'àâäéèêëïîôöùûüç-]+$");					
+	const addressRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");			
+	const cityRegex = new RegExp("[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");				
+	const emailRegex = new RegExp("[a-zA-Z0-9-_]{1,}@[a-zA-Z0-9-_]{1,}.[a-zA-Z]{1,}");
+
+					
+	// ################################################## Recover DOM elements
+	let firstName = document.getElementById("firstName");
+	let lastName = document.getElementById("lastName");
+	let address = document.getElementById("address");
+	let city = document.getElementById("city");
+	let email = document.getElementById("email");
+	let orderBtn = document.getElementById("order");
+
+	// ################################################## Adding event listeners
+	firstName.addEventListener("change", function(event) {
+		validateField('firstName', nameRegex);
 	});
-};
 
-lastName.addEventListener("change", function() {
-	console.log("Veuillez remplir le champ")
-})
+	lastName.addEventListener("change", function(event) {
+		validateField('lastName', nameRegex);
+	});
 
-address.addEventListener("change", function() {
-	console.log("Veuillez remplir le champ")
-})
+	address.addEventListener("change", function(event) {
+		validateField('address', addressRegex);
+	});
 
-city.addEventListener("change", function () {
-	console.log("Veuillez remplir le champ")
-})
+	city.addEventListener("change", function(event) {
+		validateField('city', cityRegex);
+	});
 
-email.addEventListener("change", function() {
-	console.log("Veuillez remplir le champ")
-})
+	email.addEventListener("change", function(event) {
+		validateField('email', emailRegex);
+	});
 
-
-
-
-
-
-
-
-
+	// ################################################## Preparing order
 	let productsId = [];
-	for (let product of cart) {
+	for(let product of cart) {
 		productsId.push(product.id);
 	}
 	// Listening 'change' event on button "Commander"
-	const orderForm = document.querySelector('.cart__order__form');			
+	const orderForm = document.querySelector('.cart__order__form');
 	orderForm.addEventListener('submit', function(event) {
 		event.preventDefault();
-		console.log("post stopper");
-
-				// Creating the contact object + productsId
+		// Creating the contact object + productsId
 		const form = {
-			contact : {   
+			contact : {
 				firstName: firstName.value,
 				lastName: lastName.value,
 				address: address.value,
 				city: city.value,
 				email: email.value,
-			},	
+			},
 			products: productsId,
 		};
-		console.log("form")
-		console.log(form);
+		if(validateForm() === true) {
+			sendForm(form);
+		}
+		else {
+			alert("Veuillez corriger les erreurs présentes dans le formulaire");
+		}
+	});
 
+	// ################################################## Validating form
+	function validateForm() {
+		let valid = true;
+		if(validateField('firstName', nameRegex) === false) valid = false;
+		if(validateField('lastName', nameRegex) === false) valid = false;
+		if(validateField('address', addressRegex) === false) valid = false;
+		if(validateField('city', cityRegex) === false) valid = false;
+		if(validateField('email', emailRegex) === false) valid = false;
+		return valid;
+	}
 
-
+	// ################################################## Sending form
+	function sendForm(form = {}) {
 		// Sending an HTTP request to the API with fetch() with method POST
-		fetch(`http://localhost:3000/api/products/order`, {  
+		fetch(`http://localhost:3000/api/products/order`, {
 			method : "POST",
 			headers : {
 				"Accept": "application/json",
 				"Content-Type": "application/json"
-
 			},
 			body : JSON.stringify(form),
 		})
-			//Returning the response in JSON format
-			.then (function(res) {
-				if (res.ok){
-					return res.json()
-				} 
-			})	
-			// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
-			.then (function(value) {
-				console.log("Votre formulaire à bien été envoyé");
-
-				// Getting the orderId from the API
-				let orderId = value.orderId;
-				if(orderId){
-					document.location.href = `./confirmation.html?orderId=${value.orderId}`;
-					console.log(orderId);
-				}else{
-					alert("Veuillez remplir le formulaire correctement");
-				}
-			})
-			.catch(function()  {
-				console.log("Veuillez réessayer une erreur est survenue");
-			});
-});
-
-
+		// Returning the response in JSON format
+		.then(function(res) {
+			if(res.ok){
+				return res.json()
+			}
+		})
+		// Defining the API response as detailsOfProduct and defining the action to be performed for each product in the cart
+		.then(function(response) {
+			// Getting the orderId from the API
+			let orderId = response.orderId;
+			if(orderId) {
+				document.location.href = `./confirmation.html?orderId=${response.orderId}`;
+			}
+			else{
+				alert("Veuillez remplir le formulaire correctement");
+			}
+		})
+		.catch(function()  {
+			console.log("Veuillez réessayer une erreur est survenue");
+		});
+	}
+}
 
 
 

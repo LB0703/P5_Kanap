@@ -1,19 +1,16 @@
-
-// Recover dom elements
+// Recover DOM elements
 const productList = document.querySelector("#items");
 
 // Getting products data from backend
 fetch('http://localhost:3000/api/products')
-	.then(function(res) {
-		if(res.ok) {
-			return res.json();
-		}
-	})
-	.then(function(value) {
-		let products = value;
-		console.log(products);
-		for(const product of products) {
-
+.then(function(res) {
+	if(res.ok) {
+		return res.json();
+	}
+})
+.then(function(value) {
+	let products = value;
+	for(const product of products) {
 		// Adding the different elements in the DOM
 		let productLink = document.createElement('a');
 		productLink.setAttribute("href",`product.html?id=${product._id}`);
@@ -36,12 +33,11 @@ fetch('http://localhost:3000/api/products')
 		pProduct.setAttribute("class", "productDescription")
 		pProduct.textContent = product.description;
 		productArticle.appendChild(pProduct);
-
-		}
-	})
-	.catch(function(err) {
-		console.log(err);
-	});
+	}
+})
+.catch(function(err) {
+	console.log(err);
+});
 
 
 
