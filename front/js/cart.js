@@ -1,6 +1,7 @@
 // Getting back the cart from localStorage
 let cart = getCart();
 
+// Creating a condition that displays a message when the cart is empty
 if(cart.length === 0) {
 	document.querySelector('.cart').textContent = "Aucun produit";
 	document.querySelector('.cart').style = "text-align:center";
