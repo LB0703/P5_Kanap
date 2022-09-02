@@ -157,9 +157,9 @@ else {
 	// ################################################## Regex
 	
 	const nameRegex = new RegExp("^[a-zA-Z ,.'àâäéèêëïîôöùûüç-]+$");					
-	const addressRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");			
-	const cityRegex = new RegExp("[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");				
-	const emailRegex = new RegExp("[a-zA-Z0-9-_]{1,}@[a-zA-Z0-9-_]{1,}.[a-zA-Z]{1,}");
+	const addressRegex = new RegExp("^[0-9]{0,5}[a-zA-Z ,.'àâäéèêëïîôöùûüç-]+$");			
+	const cityRegex = new RegExp("[a-zA-Z0-9 'àâäéèêëïîôöùûüç-]+$");				
+	const emailRegex = new RegExp("[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+\.[a-zA-Z]+");
 
 					
 	// ################################################## Recover DOM elements
