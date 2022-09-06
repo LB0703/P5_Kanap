@@ -34,7 +34,7 @@ else {
 			productArticle.classList.add("cart__item");
 			productArticle.setAttribute("data-id", cartItem.id);
 			productArticle.setAttribute("data-color", cartItem.color);
-			productArticle.setAttribute("data-color", cartItem.price);
+			productArticle.setAttribute("data-price", product.price);
 			productsOfCart.appendChild(productArticle)
 
 			// Creating the imgDiv element, adding the cart__item__img class, and setting the productArticle element as a child
@@ -98,10 +98,6 @@ else {
 			productQuantityInput.classList.add("itemQuantity");
 			productSettingsQuantity.appendChild(productQuantityInput);
 		
-			///////// Add the products in total quantity///////////
-			//productsCount = Number(productsCount) + Number(cartItem.quantity);
-			//document.getElementById('totalQuantity').textContent = productsCount;
-
 			// Create div content settings delete
 			let contentSettingsDelete = document.createElement("div");
 			contentSettingsDelete.classList.add("cart__item__content__settings__delete");
@@ -117,36 +113,37 @@ else {
 			let cartPrice = document.createElement("div");
 			cartPrice.classList.add("cart__price");
 			productArticle.appendChild(cartPrice);
+	
+		// Listening 'click' event on button "supprimer"
+		deleteItem.addEventListener('click', function(event) {
+			event.preventDefault();
+			deleteProductToCart(cartItem.id, cartItem.color);
+			alert("Votre article a été supprimé du panier");
+			// Deleteting productDivCartItem
+			let productDivCartItem = document.querySelector(`.cart__item[data-id="${cartItem.id}"][data-color="${cartItem.color}"]`);
+			if(productDivCartItem !== null) {
+				productDivCartItem.remove();
+			}
+			// Refreshing page
+			//window.location.reload();
+			// Refreshing totals
+			updateCartTotals();
+		});
+		
 
-		/////////// Add the prices in total price////////////////
-		//productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-		//document.getElementById('totalPrice').textContent = productsPriceTotal;
-			
-
-			// Listening 'click' event on button "supprimer"
-			deleteItem.addEventListener('click', function(event) {
-				event.preventDefault();
-				deleteProductToCart(cartItem.id, cartItem.color);
-				alert("Votre article a été supprimé du panier");
-				window.location.reload();
-				
-				
-			});
-			//totalProductsQuantity.textContent = updateCartTotals();
-			//globatPrice.textContent = updateCartTotals(product, cartItem.quantity);
-			
-
-			// Listening 'change' event on button "quantity"
-			productQuantityInput.addEventListener('change', function(event) {
-				event.preventDefault();
-				updateProductQuantityFromCart(cartItem.id, cartItem.color, productQuantityInput.value);
-				alert("Votre quantité a été modifiée");
-				window.location.reload();
-			
-				
-			})
-			productsCount.textContent = updateCartTotals()
-			productsPriceTotal.textContent = updateCartTotals(product, cartItem.quantity) ;
+		// Listening 'change' event on button "quantity"
+		productQuantityInput.addEventListener('change', function(event) {
+			event.preventDefault();
+			updateProductQuantityFromCart(cartItem.id, cartItem.color, productQuantityInput.value);
+			alert("Votre quantité a été modifiée");
+			// Refreshing page
+			//window.location.reload();
+			// Refreshing totals
+			updateCartTotals();
+		});
+		// Updating products amount / total
+		productsCount.textContent = updateCartTotals();
+		productsPriceTotal.textContent = updateCartTotals();
 		});
 	};
 

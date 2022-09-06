@@ -74,19 +74,17 @@ function updateCartTotals() {
 	// Initialising count and total to 0
 	let productsCount = 0;
 	let productsPriceTotal = 0;
-
 	// Getting cart and looping on each item
 	let cart = getCart();
 	for(let cartItem of cart) {
 		// Calculating total count
 		productsCount = Number(productsCount) + Number(cartItem.quantity);
 		document.getElementById('totalQuantity').textContent = productsCount;
-		console.log(productsCount)
-
 		// Finding ".cart_item" matching ("data-id" == cartItem.id) and ("data-color" == cartItem.color)
 		let productDivCartItem = document.querySelector(`.cart__item[data-id="${cartItem.id}"][data-color="${cartItem.color}"]`);
-		productsPriceTotal += Number(productDivCartItem.getAttribute('data-price')) * Number(cartItem.quantity);
-		console.log(productsPriceTotal)
+		if(productDivCartItem !== null) {
+			productsPriceTotal += Number(productDivCartItem.getAttribute('data-price')) * Number(cartItem.quantity);
+		}
 	}
 	document.getElementById('totalPrice').textContent = productsPriceTotal;
 	document.getElementById('totalQuantity').textContent = productsCount;
@@ -94,23 +92,3 @@ function updateCartTotals() {
 
 
 
-
-
-//function updateCartTotalQuantity() {
-//	let cart = getCart ();
-	// Initialising count and total to 0
-//	let productsCount = 0;
-	
-//	for(let cartItem of cart) {
-		 //Calculating total count
-		
-//		 productsCount = Number(productsCount) + Number(cartItem.quantity);
-//	return productsCount
-//}
-//}
-//function updateCartTotalPrice(product, cartItemQuantity) {
-
-		// Calculating total amou
-	//	productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-	//	return globatPrice;	
-//}
