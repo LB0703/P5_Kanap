@@ -8,10 +8,11 @@ if(cart.length === 0) {
 }
 else {
 	// Getting the item that will contain the cart details
-	let globatPrice = document.getElementById("#totalPrice");
+	//let globatPrice = document.getElementById("#totalPrice");
+	//let totalProductsQuantity = document.getElementById("totalQuantity")
 	const productsOfCart = document.getElementById("cart__items");
-	let productsCount = 0;
-	let productsPriceTotal = 0;
+	//let productsCount = 0;
+	//let productsPriceTotal = 0;
 
 	// Browse the cart with a for of
 	for(let cartItem of cart) {
@@ -97,8 +98,10 @@ else {
 			productSettingsQuantity.appendChild(productQuantityInput);
 
 			///////// Add the products in total quantity///////////
-			productsCount = Number(productsCount) + Number(cartItem.quantity);
-			document.getElementById('totalQuantity').textContent = productsCount;
+			//productsCount = Number(productsCount) + Number(cartItem.quantity);
+			
+			//totalProductsQuantity.textContent = updateCartTotals();
+			//globatPrice.textContent = updateCartTotals();
 
 			// Create div content settings delete
 			let contentSettingsDelete = document.createElement("div");
@@ -117,15 +120,18 @@ else {
 			productArticle.appendChild(cartPrice);
 
 			/////////// Add the prices in total price////////////////
-			productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-			document.getElementById('totalPrice').textContent = productsPriceTotal;
+			//productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+			//globatPrice.textContent = updateCartTotalPrice();
+			
 
 			// Listening 'click' event on button "supprimer"
 			deleteItem.addEventListener('click', function(event) {
 				event.preventDefault();
 				deleteProductToCart(cartItem.id, cartItem.color);
 				alert("Votre article a été supprimé du panier");
-				window.location.reload();
+				//window.location.reload();
+				updateCartTotals();
+				
 			});
 
 			// Listening 'change' event on button "quantity"
@@ -133,10 +139,14 @@ else {
 				event.preventDefault();
 				updateProductQuantityFromCart(cartItem.id, cartItem.color, productQuantityInput.value);
 				alert("Votre quantité a été modifiée");
-				window.location.reload();
+				//window.location.reload();
+				updateCartTotals();
+				
 			})
+			
 		});
 	};
+
 
 	// #################################################################################################### Form
 

@@ -49,6 +49,7 @@ function updateProductQuantityFromCart(productId = '', productColor = '', quanti
 	}
 }
 
+
 // Adding product from cart
 function addProductToCart(productId = '', productColor = '', quantity = 0) {
 	// Getting cart from LocalStorage
@@ -68,3 +69,53 @@ function addProductToCart(productId = '', productColor = '', quantity = 0) {
 	}
 	saveCart(cart);
 }
+
+function updateCartTotals() {
+	// Initialising count and total to 0
+	let productsCount = 0;
+	let productsPriceTotal = 0;
+
+	// Getting cart and looping on each item
+	let cart = getCart();
+	for(let cartItem of cart) {
+		// Calculating total count
+		productsCount = Number(productsCount) + Number(cartItem.quantity);
+		
+		// Calculating total amount
+		productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+		
+	}
+	//Making change in HTML DOM
+	document.getElementById('totalPrice').textContent = productsCount;
+	document.getElementById('totalQuantity').textContent = productsPriceTotal;
+}
+
+
+
+
+
+//function updateCartTotalQuantity() {
+//	let cart = getCart ();
+	// Initialising count and total to 0
+//	let productsCount = 0;
+//	for(let cartItem of cart) {
+//		 //Calculating total count
+		
+//		productsCount = Number(productsCount) + Number(cartItem.quantity);
+		
+//	}
+//	return productsCount
+//}
+//function updateCartTotalPrice() {
+//	let cart = getCart ();
+
+//	let productsPriceTotal = 0;
+
+	//	for(let product of cart) {
+		// Calculating total amount
+		//productPriceTotal += product.price * quantity
+//		productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+//		return globatPrice
+		
+//	}
+//}

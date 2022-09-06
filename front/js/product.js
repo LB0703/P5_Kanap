@@ -43,16 +43,22 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 				alert("Veuillez saisir une couleur");
 				return false;
 			}
-			if(quantity.value == 0){
-				alert("Veuillez saisir une quantité supérieur à 0");
+			if(quantity.value == 0) {
+				alert("Veuillez saisir une quantité supérieur à 0 et inférieur à 100");
 				return false;
 			}
+			
 			// Adding product to cart
+			if(quantity.value >0 && quantity.value <= 100){ 
 			addProductToCart(productId, colors.value, quantity.value);
 			// Confirming customer
 			if(confirm("Produit(s) ajouté(s) au panier, souhaitez-vous vous diriger vers le panier ?")) {
 				window.location.href = "cart.html";
 			}
+			}else{
+				alert("La quantité n'est pas valide, veuillez selectionner une quantité comprise entre 1 et 99")
+			}
+			
 		});
 	})
 	.catch(function() {
