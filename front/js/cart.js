@@ -8,11 +8,11 @@ if(cart.length === 0) {
 }
 else {
 	// Getting the item that will contain the cart details
-	//let globatPrice = document.getElementById("#totalPrice");
-	//let totalProductsQuantity = document.getElementById("totalQuantity")
+	let globatPrice = document.getElementById("#totalPrice");
+	let totalProductsQuantity = document.getElementById("totalQuantity")
 	const productsOfCart = document.getElementById("cart__items");
-	//let productsCount = 0;
-	//let productsPriceTotal = 0;
+	let productsCount = 0;
+	let productsPriceTotal = 0;
 
 	// Browse the cart with a for of
 	for(let cartItem of cart) {
@@ -33,7 +33,8 @@ else {
 			let productArticle = document.createElement ("article");
 			productArticle.classList.add("cart__item");
 			productArticle.setAttribute("data-id", cartItem.id);
-			productArticle.setAttribute("data-color", cartItem.color)
+			productArticle.setAttribute("data-color", cartItem.color);
+			productArticle.setAttribute("data-color", cartItem.price);
 			productsOfCart.appendChild(productArticle)
 
 			// Creating the imgDiv element, adding the cart__item__img class, and setting the productArticle element as a child
@@ -93,15 +94,13 @@ else {
 			productQuantityInput.setAttribute("name", "itemQuantity");
 			productQuantityInput.setAttribute("min", 1 );
 			productQuantityInput.setAttribute("max", 100);
-			productQuantityInput.setAttribute("value", `${cartItem.quantity}`);
+			productQuantityInput.setAttribute("value", `${cartItem.quantity}` );
 			productQuantityInput.classList.add("itemQuantity");
 			productSettingsQuantity.appendChild(productQuantityInput);
-
+		
 			///////// Add the products in total quantity///////////
 			//productsCount = Number(productsCount) + Number(cartItem.quantity);
-			
-			//totalProductsQuantity.textContent = updateCartTotals();
-			//globatPrice.textContent = updateCartTotals();
+			//document.getElementById('totalQuantity').textContent = productsCount;
 
 			// Create div content settings delete
 			let contentSettingsDelete = document.createElement("div");
@@ -119,9 +118,9 @@ else {
 			cartPrice.classList.add("cart__price");
 			productArticle.appendChild(cartPrice);
 
-			/////////// Add the prices in total price////////////////
-			//productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-			//globatPrice.textContent = updateCartTotalPrice();
+		/////////// Add the prices in total price////////////////
+		//productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+		//document.getElementById('totalPrice').textContent = productsPriceTotal;
 			
 
 			// Listening 'click' event on button "supprimer"
@@ -129,21 +128,25 @@ else {
 				event.preventDefault();
 				deleteProductToCart(cartItem.id, cartItem.color);
 				alert("Votre article a été supprimé du panier");
-				//window.location.reload();
-				updateCartTotals();
+				window.location.reload();
+				
 				
 			});
+			//totalProductsQuantity.textContent = updateCartTotals();
+			//globatPrice.textContent = updateCartTotals(product, cartItem.quantity);
+			
 
 			// Listening 'change' event on button "quantity"
 			productQuantityInput.addEventListener('change', function(event) {
 				event.preventDefault();
 				updateProductQuantityFromCart(cartItem.id, cartItem.color, productQuantityInput.value);
 				alert("Votre quantité a été modifiée");
-				//window.location.reload();
-				updateCartTotals();
+				window.location.reload();
+			
 				
 			})
-			
+			productsCount.textContent = updateCartTotals()
+			productsPriceTotal.textContent = updateCartTotals(product, cartItem.quantity) ;
 		});
 	};
 

@@ -80,14 +80,16 @@ function updateCartTotals() {
 	for(let cartItem of cart) {
 		// Calculating total count
 		productsCount = Number(productsCount) + Number(cartItem.quantity);
-		
-		// Calculating total amount
-		productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-		
+		document.getElementById('totalQuantity').textContent = productsCount;
+		console.log(productsCount)
+
+		// Finding ".cart_item" matching ("data-id" == cartItem.id) and ("data-color" == cartItem.color)
+		let productDivCartItem = document.querySelector(`.cart__item[data-id="${cartItem.id}"][data-color="${cartItem.color}"]`);
+		productsPriceTotal += Number(productDivCartItem.getAttribute('data-price')) * Number(cartItem.quantity);
+		console.log(productsPriceTotal)
 	}
-	//Making change in HTML DOM
-	document.getElementById('totalPrice').textContent = productsCount;
-	document.getElementById('totalQuantity').textContent = productsPriceTotal;
+	document.getElementById('totalPrice').textContent = productsPriceTotal;
+	document.getElementById('totalQuantity').textContent = productsCount;
 }
 
 
@@ -98,24 +100,17 @@ function updateCartTotals() {
 //	let cart = getCart ();
 	// Initialising count and total to 0
 //	let productsCount = 0;
+	
 //	for(let cartItem of cart) {
-//		 //Calculating total count
+		 //Calculating total count
 		
-//		productsCount = Number(productsCount) + Number(cartItem.quantity);
-		
-//	}
+//		 productsCount = Number(productsCount) + Number(cartItem.quantity);
 //	return productsCount
 //}
-//function updateCartTotalPrice() {
-//	let cart = getCart ();
+//}
+//function updateCartTotalPrice(product, cartItemQuantity) {
 
-//	let productsPriceTotal = 0;
-
-	//	for(let product of cart) {
-		// Calculating total amount
-		//productPriceTotal += product.price * quantity
-//		productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
-//		return globatPrice
-		
-//	}
+		// Calculating total amou
+	//	productsPriceTotal += Number(product.price) * Number (cartItem.quantity);
+	//	return globatPrice;	
 //}
